@@ -1,8 +1,8 @@
-# Money::Oxr
+# MoneyOXR
 
-A Money-compatible rate store that uses exchange rates from openexchangerates.org.
+A [Money](https://github.com/RubyMoney/money)-compatible rate store that uses exchange rates from openexchangerates.org.
 
-A few improvements over the existing money-open-exchange-rates gem:
+A few improvements over the existing [money-open-exchange-rates](https://github.com/spk/money-open-exchange-rates) gem:
 
 * Uses BigDecimal instead of Float for exchange rates.
 * Automatically caches API results to file if a :cache_path option is provided.
