@@ -8,7 +8,7 @@ module MoneyOXR
 
     class UnsupportedCurrency < StandardError; end
 
-    attr_reader :app_id, :source, :cache_path, :last_updated_at, :max_age
+    attr_reader :app_id, :source, :cache_path, :last_updated_at, :max_age, :on_api_failure
 
     def initialize(*)
       super
@@ -16,6 +16,7 @@ module MoneyOXR
       @source = options[:source] || 'USD'
       @cache_path = options[:cache_path]
       @max_age = options[:max_age]
+      @on_api_failure = options[:on_api_failure] || :warn
     end
 
     def get_rate(iso_from, iso_to)
@@ -57,6 +58,8 @@ module MoneyOXR
 
     def load_from_api
       json = get_json_from_api
+      # Protect against saving or loading nil/bad data from API.
+      return unless json && json =~ /rates/
       if cache_path
         write_cache_file(json)
         load_from_cache_path
@@ -67,6 +70,10 @@ module MoneyOXR
 
     def get_json_from_api
       open(api_uri).read
+    rescue OpenURI::HTTPError, SocketError
+      raise unless on_api_failure == :warn
+      warn "#{$!.class}: #{$!.message}"
+      nil
     end
 
     def api_uri
