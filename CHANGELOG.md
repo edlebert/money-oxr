@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [How to use a CHANGELOG](http://keepachangelog.com/)
 
+## [Unreleased]
+### Changed
+- Return nil in RateStore if rate is unknown.
+
 ## [0.2.0] - 2018-03-19
 ### Added
 - Added safe handling of API request errors.

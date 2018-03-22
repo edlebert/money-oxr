@@ -45,17 +45,11 @@ RSpec.describe MoneyOXR::RatesStore do
       subject = described_class.new(cache_path: json_path)
       expect(subject.get_rate('CAD', 'EUR')).to eq BigDecimal.new('0.620734267068656260733503797390795')
     end
-    it 'raises UnsupportedCurrency if currency is unsupported' do
+    it 'returns nil if currency is unsupported' do
       subject = described_class.new(cache_path: json_path)
-      expect {
-        subject.get_rate('USD', 'FOO')
-      }.to raise_error(described_class::UnsupportedCurrency, 'FOO')
-      expect {
-        subject.get_rate('FOO', 'USD')
-      }.to raise_error(described_class::UnsupportedCurrency, 'FOO')
-      expect {
-        subject.get_rate('FOO', 'BAR')
-      }.to raise_error(described_class::UnsupportedCurrency, 'FOO')
+      expect(subject.get_rate('USD', 'FOO')).to be nil
+      expect(subject.get_rate('FOO', 'USD')).to be nil
+      expect(subject.get_rate('FOO', 'BAR')).to be nil
     end
   end
 

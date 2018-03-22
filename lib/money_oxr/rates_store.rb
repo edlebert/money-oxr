@@ -6,8 +6,6 @@ require 'open-uri'
 module MoneyOXR
   class RatesStore < Money::RatesStore::Memory
 
-    class UnsupportedCurrency < StandardError; end
-
     attr_reader :app_id, :source, :cache_path, :last_updated_at, :max_age, :on_api_failure
 
     def initialize(*)
@@ -23,15 +21,15 @@ module MoneyOXR
       load
       super || begin
         if iso_from == source
-          raise UnsupportedCurrency.new(iso_to)
+          nil
         elsif inverse_rate = super(iso_to, iso_from)
           add_rate(iso_from, iso_to, 1 / inverse_rate)
         elsif iso_to == source
-          raise UnsupportedCurrency.new(iso_from)
+          nil
         else
           rate1 = get_rate(iso_from, source)
           rate2 = get_rate(source, iso_to)
-          add_rate(iso_from, iso_to, rate1 * rate2)
+          rate1 && rate2 && add_rate(iso_from, iso_to, rate1 * rate2)
         end
       end
     end
