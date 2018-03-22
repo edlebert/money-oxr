@@ -32,13 +32,11 @@ on your options.
 
 ``` ruby
 require 'money_oxr/bank'
-oxr_bank = MoneyOXR::Bank.new(
+Money.default_bank = MoneyOXR::Bank.new(
   app_id: 'abcd1234',
-  cache_path: 'tmp/oxr.json',
+  cache_path: 'config/oxr.json',
   max_age: 86400
 )
-oxr_bank.store.load
-Money.default_bank = oxr_bank
 ```
 
 If you only want to load data from a file without ever fetching from the API,
@@ -46,11 +44,9 @@ the :app_id and :max_age options are not necessary.
 
 ``` ruby
 require 'money_oxr/bank'
-oxr_bank = MoneyOXR::Bank.new(
+Money.default_bank = MoneyOXR::Bank.new(
   cache_path: 'config/oxr.json'
 )
-oxr_bank.store.load
-Money.default_bank = oxr_bank
 ```
 
 ### :source
@@ -60,14 +56,12 @@ source currency, you may provide it with the :source option. The default is `USD
 
 ``` ruby
 require 'money_oxr/bank'
-oxr_bank = MoneyOXR::Bank.new(
+Money.default_bank = MoneyOXR::Bank.new(
   app_id: 'abcd1234',
-  cache_path: 'tmp/oxr.json',
+  cache_path: 'config/oxr.json',
   max_age: 86400,
   source: 'GBP'
 )
-oxr_bank.store.load
-Money.default_bank = oxr_bank
 ```
 
 ## Development
