@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Changed
 - Return nil in RateStore if rate is unknown.
+- Updated Money dependency to ~> 6.6
 
 ## [0.2.0] - 2018-03-19
 ### Added
