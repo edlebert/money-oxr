@@ -28,7 +28,7 @@ Or install it yourself as:
 
 With the gem, you do not need to manually add exchange rates. Calling load will
 load the rates from the cache file or download the rates from the API depending
-on your options.  The :source option defaults to
+on your options.
 
 ``` ruby
 require 'money_oxr/bank'
@@ -53,8 +53,10 @@ oxr_bank.store.load
 Money.default_bank = oxr_bank
 ```
 
+### :source
+
 If you are on a paid plan from openexchangerates.org and you wish to use a different
-source currency, you may provide it with the :source option.
+source currency, you may provide it with the :source option. The default is `USD`.
 
 ``` ruby
 require 'money_oxr/bank'
