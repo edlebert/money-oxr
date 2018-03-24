@@ -26,8 +26,8 @@ Or install it yourself as:
 
 ## Usage
 
-With the gem, you do not need to manually add exchange rates. Calling load will
-load the rates from the cache file or download the rates from the API depending
+With the gem, you do not need to manually add exchange rates. Calling, `MoneyOXR::RatesStore#load` will
+either load the rates from the cache file or download the rates from the API and create the file depending
 on your options.
 
 ``` ruby
@@ -37,6 +37,12 @@ Money.default_bank = MoneyOXR::Bank.new(
   cache_path: 'config/oxr.json',
   max_age: 86400
 )
+
+MoneyOXR::RatesStore.new({
+  app_id: 'abcd1234',
+  cache_path: 'config/oxr.json',
+  max_age: 86400
+}).load
 ```
 
 If you only want to load data from a file without ever fetching from the API,
@@ -47,6 +53,10 @@ require 'money_oxr/bank'
 Money.default_bank = MoneyOXR::Bank.new(
   cache_path: 'config/oxr.json'
 )
+
+MoneyOXR::RatesStore.new({
+  cache_path: 'config/oxr.json',
+}).load
 ```
 
 ### :source
