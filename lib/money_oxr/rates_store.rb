@@ -75,7 +75,7 @@ module MoneyOXR
     end
 
     def api_uri
-      "https://openexchangerates.org/api/latest.json?source=#{source}&app_id=#{app_id}"
+      "https://openexchangerates.org/api/latest.json?base=#{source}&app_id=#{app_id}"
     end
 
     def load_from_cache_path

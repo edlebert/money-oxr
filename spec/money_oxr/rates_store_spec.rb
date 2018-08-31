@@ -166,7 +166,7 @@ RSpec.describe MoneyOXR::RatesStore do
   def stub_api(app_id:, source: 'USD', body: json_string.gsub('1521291605', Time.now.to_i.to_s), status: 200)
     stub_request(
       :get,
-      "https://openexchangerates.org/api/latest.json?app_id=#{app_id}&source=#{source}"
+      "https://openexchangerates.org/api/latest.json?app_id=#{app_id}&base=#{source}"
     ).to_return(
       status: status,
       body: body
