@@ -42,11 +42,11 @@ module MoneyOXR
 
     def load
       # Loads data and ensures it is not stale.
-      if !loaded? && cache_path && File.exist?(cache_path)
-        load_from_cache_path
-      end
-      if app_id && (!loaded? || stale?)
-        load_from_api
+      return if loaded? && !stale?
+
+      with_cache_file_lock do
+        load_from_cache_path if cache_path && File.exists?(cache_path)
+        load_from_api if app_id && stale?
       end
     end
 
@@ -64,6 +64,7 @@ module MoneyOXR
       json = get_json_from_api
       # Protect against saving or loading nil/bad data from API.
       return unless json && json =~ /rates/
+
       if cache_path
         write_cache_file(json)
         load_from_cache_path
@@ -86,7 +87,8 @@ module MoneyOXR
     end
 
     def load_from_cache_path
-      load_json(File.read(cache_path))
+      json = File.read(cache_path)
+      load_json(json) unless json.empty?
     end
 
     def write_cache_file(text)
@@ -114,5 +116,18 @@ module MoneyOXR
       data
     end
 
+    private
+
+    def with_cache_file_lock
+      return yield unless cache_path
+      File.open(cache_path, 'a') do |cache_io|
+        cache_io.flock(File::LOCK_EX)
+        begin
+          yield
+        ensure
+          cache_io.flock(File::LOCK_UN)
+        end
+      end
+    end
   end
 end
