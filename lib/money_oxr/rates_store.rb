@@ -55,6 +55,10 @@ module MoneyOXR
     end
 
     def load_from_api
+      # When loading from the API, set the last_updated_at to now.
+      # "timestamp" value in response may be days old (it may not update over
+      # the weekend)
+      now = Time.now
       json = get_json_from_api
       # Protect against saving or loading nil/bad data from API.
       return unless json && json =~ /rates/
@@ -64,6 +68,7 @@ module MoneyOXR
       else
         load_json(json)
       end
+      @last_updated_at = now
     end
 
     def get_json_from_api

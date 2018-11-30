@@ -93,6 +93,16 @@ RSpec.describe MoneyOXR::RatesStore do
       json = File.read(tmp_cache_path)
       expect(json).to eq json_string
     end
+    it 'sets last_updated_at to Time.now, regardless of value in JSON data' do
+      subject = described_class.new app_id: 'abc1234'
+      expect(subject.loaded?).to be false
+      stub_api(app_id: 'abc1234', source: 'USD', body: json_string)
+      subject.load_from_api
+      expect(subject.loaded?).to be true
+      expect(JSON.parse(json_string)['timestamp']).to eq 1521291605
+      expect(subject.last_updated_at).not_to be nil
+      expect(subject.last_updated_at.to_i).to be_within(10).of(Time.now.to_i)
+    end
     it 'raises error on API failure if on_api_failure is not :warn' do
       subject = described_class.new app_id: 'abc1234', cache_path: tmp_cache_path, on_api_failure: :error
       stub_api(app_id: 'abc1234', source: 'USD', status: 401, body: nil)
@@ -100,6 +110,7 @@ RSpec.describe MoneyOXR::RatesStore do
       expect {
         subject.load_from_api
       }.to raise_error(OpenURI::HTTPError)
+      expect(subject.last_updated_at).to be nil
     end
   end
 
@@ -127,6 +138,7 @@ RSpec.describe MoneyOXR::RatesStore do
     it 'loads data from cache_path into rates' do
       subject = described_class.new(cache_path: json_path)
       subject.load_from_cache_path
+      # Uses timestamp from data in file.
       expect(subject.last_updated_at).to eq Time.at(1521291605)
       expect(subject.get_rate('USD', 'USD')).to eq 1
       expect(subject.get_rate('USD', 'EUR')).to be_a(BigDecimal)
