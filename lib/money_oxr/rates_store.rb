@@ -107,7 +107,7 @@ module MoneyOXR
       text = text.gsub(/("[A-Z]{3}": ?)(\d+\.\d+)/, '\\1"\\2"')
       data = JSON.parse(text)
       data['rates'] = data['rates'].each_with_object({}) do |(key, value), rates|
-        rates[key] = BigDecimal.new(value)
+        rates[key] = BigDecimal(value)
       end
       data
     end
