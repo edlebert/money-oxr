@@ -35,15 +35,15 @@ RSpec.describe MoneyOXR::RatesStore do
   describe '#get_rate' do
     it 'returns rates from source' do
       subject = described_class.new(cache_path: json_path)
-      expect(subject.get_rate('USD', 'EUR')).to eq BigDecimal.new('0.813255')
+      expect(subject.get_rate('USD', 'EUR')).to eq BigDecimal('0.813255')
     end
     it 'adds and returns inverse rates to source' do
       subject = described_class.new(cache_path: json_path)
-      expect(subject.get_rate('EUR', 'USD')).to eq BigDecimal.new('1.229626624')
+      expect(subject.get_rate('EUR', 'USD')).to eq BigDecimal('1.229626624')
     end
     it 'adds and returns calculated rates using source as an intermediary' do
       subject = described_class.new(cache_path: json_path)
-      expect(subject.get_rate('CAD', 'EUR')).to eq BigDecimal.new('0.620734267068656260733503797390795')
+      expect(subject.get_rate('CAD', 'EUR')).to eq BigDecimal('0.620734267068656260733503797390795')
     end
     it 'returns nil if currency is unsupported' do
       subject = described_class.new(cache_path: json_path)
@@ -142,7 +142,7 @@ RSpec.describe MoneyOXR::RatesStore do
       expect(subject.last_updated_at).to eq Time.at(1521291605)
       expect(subject.get_rate('USD', 'USD')).to eq 1
       expect(subject.get_rate('USD', 'EUR')).to be_a(BigDecimal)
-      expect(subject.get_rate('USD', 'EUR')).to eq BigDecimal.new('0.813255')
+      expect(subject.get_rate('USD', 'EUR')).to eq BigDecimal('0.813255')
     end
   end
 
@@ -160,7 +160,7 @@ RSpec.describe MoneyOXR::RatesStore do
       expect(subject.last_updated_at).to eq Time.at(1521291605)
       expect(subject.get_rate('USD', 'USD')).to eq 1
       expect(subject.get_rate('USD', 'EUR')).to be_a(BigDecimal)
-      expect(subject.get_rate('USD', 'EUR')).to eq BigDecimal.new('0.813255')
+      expect(subject.get_rate('USD', 'EUR')).to eq BigDecimal('0.813255')
     end
   end
 
