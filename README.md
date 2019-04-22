@@ -1,4 +1,4 @@
-# MoneyOXR
+# money-oxr [![Build Status](https://travis-ci.org/edlebert/money-oxr.svg?branch=master)](https://travis-ci.org/edlebert/money-oxr)
 
 A [Money](https://github.com/RubyMoney/money)-compatible rate store that uses exchange rates from openexchangerates.org.
 
