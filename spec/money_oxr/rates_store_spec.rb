@@ -70,7 +70,7 @@ RSpec.describe MoneyOXR::RatesStore do
     end
     it 'does not replace cached data with api data if request failed and on_api_failure is :warn' do
       subject = described_class.new app_id: 'abc1234', cache_path: json_path, on_api_failure: :warn, max_age: 0
-      stub_api(app_id: 'abc1234', source: 'USD', status: 401, body: nil)
+      stub_api(app_id: 'abc1234', source: 'USD', status: 401, body: '')
       subject.load
       expect(subject.loaded?).to be true
     end
@@ -105,7 +105,7 @@ RSpec.describe MoneyOXR::RatesStore do
     end
     it 'raises error on API failure if on_api_failure is not :warn' do
       subject = described_class.new app_id: 'abc1234', cache_path: tmp_cache_path, on_api_failure: :error
-      stub_api(app_id: 'abc1234', source: 'USD', status: 401, body: nil)
+      stub_api(app_id: 'abc1234', source: 'USD', status: 401, body: '')
       expect(subject.loaded?).to be false
       expect {
         subject.load_from_api
