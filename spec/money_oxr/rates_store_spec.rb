@@ -181,7 +181,7 @@ RSpec.describe MoneyOXR::RatesStore do
       "https://openexchangerates.org/api/latest.json?app_id=#{app_id}&base=#{source}"
     ).to_return(
       status: status,
-      body: body
+      body: body.dup
     )
   end
 
