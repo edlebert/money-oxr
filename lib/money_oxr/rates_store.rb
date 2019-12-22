@@ -35,7 +35,9 @@ module MoneyOXR
     end
 
     def loaded?
-      index.any?
+      transaction do
+        rates.any?
+      end
     end
 
     def load
@@ -95,7 +97,7 @@ module MoneyOXR
       data = parse_json(text)
       transaction do
         @last_updated_at = Time.at(data['timestamp'])
-        index.clear
+        rates.clear
         data['rates'].each do |iso_to, rate|
           add_rate(source, iso_to, rate)
         end
