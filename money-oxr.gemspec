@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name          = "money-oxr"
-  spec.version       = "0.4.1"
+  spec.version       = "0.4.2"
   spec.authors       = ["Ed Lebert"]
 
   spec.summary       = %q{A Money-compatible rate store that uses exchange rates from openexchangerates.org.}
