@@ -4,8 +4,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [How to use a CHANGELOG](http://keepachangelog.com/)
 
-## [Unreleased]
+## [0.4.3]
 - Replace `open` with `URI.open` for compatibility with ruby 3.
+
+## [0.4.2]
+- Update to Money 6.13.5
+- Fix bugs related to webmock in specs.
+
+## [0.4.1]
+- Fix ruby 2.7 warnings.
 
 ## [0.4.0] - 2018-11-29
 - Use `base` instead of `source` for base currency.
