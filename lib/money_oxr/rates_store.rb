@@ -74,7 +74,7 @@ module MoneyOXR
     end
 
     def get_json_from_api
-      open(api_uri).read
+      URI.open(api_uri).read
     rescue OpenURI::HTTPError, SocketError
       raise unless on_api_failure == :warn
       warn "#{$!.class}: #{$!.message}"

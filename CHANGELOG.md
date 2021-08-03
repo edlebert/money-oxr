@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [How to use a CHANGELOG](http://keepachangelog.com/)
 
+## [Unreleased]
+- Replace `open` with `URI.open` for compatibility with ruby 3.
+
 ## [0.4.0] - 2018-11-29
 - Use `base` instead of `source` for base currency.
 - Use Time.now as last_updated_at timestamp when fetching data over the API
