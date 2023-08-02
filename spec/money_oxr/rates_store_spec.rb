@@ -103,6 +103,19 @@ RSpec.describe MoneyOXR::RatesStore do
       expect(subject.last_updated_at).not_to be nil
       expect(subject.last_updated_at.to_i).to be_within(10).of(Time.now.to_i)
     end
+
+    it 'loads json data only once if cache_path provided' do
+      api_request = stub_api(app_id: 'abc1234', source: 'USD', delay_response: 0.1)
+
+      Array.new(2) do
+        Thread.new do
+          described_class.new(app_id: 'abc1234', cache_path: tmp_cache_path, max_age: 600).load
+        end
+      end.each(&:join)
+
+      expect(api_request).to have_been_made.once
+    end
+
     it 'raises error on API failure if on_api_failure is not :warn' do
       subject = described_class.new app_id: 'abc1234', cache_path: tmp_cache_path, on_api_failure: :error
       stub_api(app_id: 'abc1234', source: 'USD', status: 401, body: '')
@@ -175,13 +188,18 @@ RSpec.describe MoneyOXR::RatesStore do
 
   private
 
-  def stub_api(app_id:, source: 'USD', body: json_string.gsub('1521291605', Time.now.to_i.to_s), status: 200)
+  def stub_api(app_id:, source: 'USD', body: json_string.gsub('1521291605', Time.now.to_i.to_s), status: 200, delay_response: 0)
     stub_request(
       :get,
       "https://openexchangerates.org/api/latest.json?app_id=#{app_id}&base=#{source}"
     ).to_return(
       status: status,
-      body: body.dup
+      body: (
+        proc do
+          sleep delay_response unless delay_response.zero?
+          body.dup
+        end
+      )
     )
   end
 
